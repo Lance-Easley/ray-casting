@@ -9,9 +9,12 @@ screen_y = 361
 win = pygame.display.set_mode((screen_x, screen_y))
 win_rect = pygame.Rect(0, 0, screen_x, screen_y)
 
-visible = pygame.Surface((screen_x, screen_y))
+invisible = pygame.Surface((screen_x, screen_y))
+invisible_image = pygame.image.load("background.png")
+invisible.set_colorkey("#123456")
 
-visible_image = pygame.image.load("background.png")
+visible = pygame.Surface((screen_x, screen_y))
+visible_image = pygame.image.load("foreground.png")
 
 pygame.display.set_caption("Ray Casting")
 
@@ -111,8 +114,6 @@ def getIntersection(ray, segment):
 #######################################################
 
 # DRAWING
-canvas = win
-ctx = canvas
 def draw(segments):
 	mouse = pygame.mouse.get_pos()
 
@@ -192,14 +193,15 @@ def draw(segments):
 		# Draw Polygon Shading
 		points.append((intersect['x'], intersect['y']))
 	# # print("\n", points, "\n")
-	lit_area = pygame.draw.polygon(canvas, "#123456", points)
-	canvas.blit(visible_image.subsurface(lit_area), win_rect)
+	invisible.blit(invisible_image, win_rect)
+	pygame.draw.polygon(invisible, "#123456", points)
 
 
 #######################################################
 
 def redrawGameWindow():
-	pygame.draw.rect(win, (0, 0, 0), (0, 0, screen_x, screen_y))
+	win.blit(visible_image, win_rect)
+	win.blit(invisible, win_rect)
 	draw(segments)
 	pygame.display.update()
 
