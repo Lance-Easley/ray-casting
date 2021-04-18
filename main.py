@@ -193,16 +193,15 @@ segments = [
 ]
 
 segment_deltas = set()
+uniquePoints = set()
 for segment in segments:
 	# s_px, s_py, s_dx, s_dy
 	segment_deltas.add((segment['a']['x'], segment['a']['y'], segment['b']['x'] - segment['a']['x'], segment['b']['y'] - segment['a']['y']))
 
-uniquePoints = set()
-for seg in segments:
-	if tuple(seg["a"].items()) not in uniquePoints:
-		uniquePoints.add(tuple(seg["a"].items()))
-	if tuple(seg["b"].items()) not in uniquePoints:
-		uniquePoints.add(tuple(seg["b"].items()))
+	if tuple(segment["a"].items()) not in uniquePoints:
+		uniquePoints.add(tuple(segment["a"].items()))
+	if tuple(segment["b"].items()) not in uniquePoints:
+		uniquePoints.add(tuple(segment["b"].items()))
 
 # Find intersection of RAY & SEGMENT
 def getIntersection(ray, segment_delta):
